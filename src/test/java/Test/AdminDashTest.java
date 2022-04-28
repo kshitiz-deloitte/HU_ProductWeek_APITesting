@@ -11,7 +11,7 @@ import java.io.File;
 import static io.restassured.RestAssured.given;
 
 public class AdminDashTest extends BaseClass {
-    // done TC011
+    // TC011-Downloading the Marksheet
     @Test(priority = 1)
     public void downloadMarkSheet() {
         String response = given().
@@ -24,7 +24,7 @@ public class AdminDashTest extends BaseClass {
                 statusCode(200).extract().response().asString();
     }
 
-    // done TC010
+    // TC010-Downloading the Pan card
     @Test(priority = 2)
     public void downloadPanCard() {
         String response = given().
@@ -37,7 +37,7 @@ public class AdminDashTest extends BaseClass {
                 statusCode(200).extract().response().asString();
     }
 
-    // done TC009
+    // TC009-Downloading the Aadhar card
     @Test(priority = 3)
     public void downloadAadharCard() {
         String response = given().
@@ -50,7 +50,7 @@ public class AdminDashTest extends BaseClass {
                 statusCode(200).extract().response().asString();
     }
 
-    // done TC008
+    // TC008-Validating the Company name
     @Test(priority = 4)
     public void validatePerticularCompanyName() {
         String response = given().baseUri(properties.getProperty("base_URL")).
@@ -67,7 +67,7 @@ public class AdminDashTest extends BaseClass {
         }
     }
 
-    // done TC007
+    // TC007-Json Schema validator for Comapny name
     @Test(priority = 5)
     public void jsonValidatorForParticularCompanyName(){
         given().
@@ -78,7 +78,7 @@ public class AdminDashTest extends BaseClass {
                 body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/resources/json/particularCompanyName.json")));
     }
 
-    // done TC006
+    //TC006-Validating the Mail response
     @Test(priority = 6)
     public void mailResponse(){
         File jsonFile = new File(properties.getProperty("send_mail_path"));
@@ -93,7 +93,7 @@ public class AdminDashTest extends BaseClass {
                 statusCode(200).extract().response().asString();
     }
 
-    // done TC05
+    // TC05-Validator for Company register
     @Test(priority = 7)
     public void jsonValidatorForCompanyRegister(){
         given().
@@ -104,7 +104,7 @@ public class AdminDashTest extends BaseClass {
                 body(JsonSchemaValidator.matchesJsonSchema(new File("src/test/resources/json/comp_register.json")));
     }
 
-    // donne TC004
+    // TC004-Editing the Kyc status by Id
     @Test(priority = 8)
     public void editKycStatuswithID(){
         File jsonFile = new File(properties.getProperty("edit_kyc_status_id_path"));
@@ -123,7 +123,7 @@ public class AdminDashTest extends BaseClass {
         Assert.assertEquals(current_status,properties.getProperty("kyc_status"));
     }
 
-    //not done TC003
+    //TC003-Editing the Kyc status
     @Test
     public void editKycStatus(){
         File jsonFile = new File(properties.getProperty("edit_kyc_status_id_path"));
@@ -156,7 +156,7 @@ public class AdminDashTest extends BaseClass {
         Assert.assertEquals(after_updating_status,properties.getProperty("status_kyc"));
     }
 
-    // DONE TC002
+    //TC002-Getting the Kyc status of an employee
     @Test(priority = 10 )
     public void kycStatusEmployeeByID(){
         String response =  given().
@@ -170,7 +170,7 @@ public class AdminDashTest extends BaseClass {
         Assert.assertEquals(properties.getProperty("user_id"),value);
     }
 
-    // done TC001
+    // TC001-Validating the Json Schema for the Kyc status of an employee
     @Test(priority = 11)
     public void jsonValidatorForKycStatusfEmployee(){
         given().
