@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.Properties;
 import static io.restassured.RestAssured.given;
 
-
-
 public class EmployeeDashboardAPITest {
     public static Properties properties;
     File file;
@@ -26,7 +24,7 @@ public class EmployeeDashboardAPITest {
     public void validatingUploadAadhar() {
         file = new File(System.getProperty("user.dir") + properties.getProperty("aadhar"));
         Response response = given().
-                baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app").
+                baseUri(properties.getProperty("base_URL")).
                 multiPart("file", file).
                 when().
                 put("/1/upload").
@@ -41,7 +39,7 @@ public class EmployeeDashboardAPITest {
     public void validatingUploadPan() {
         file = new File(System.getProperty("user.dir") + properties.getProperty("pan"));
         Response response = given().
-                baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app").
+                baseUri(properties.getProperty("base_URL")).
                 multiPart("file", file).
                 when().
                 put("/1/upload-pan").
@@ -56,7 +54,7 @@ public class EmployeeDashboardAPITest {
     public void validatingUploadMarksheet() {
         file = new File(System.getProperty("user.dir") + properties.getProperty("marksheet"));
         Response response = given().
-                baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app").
+                baseUri(properties.getProperty("base_URL")).
                 multiPart("file", file).
                 when().
                 put("/1/upload-marksheet").
@@ -71,7 +69,7 @@ public class EmployeeDashboardAPITest {
     public void invalidateUploadAadhar() {
         file = new File(System.getProperty("user.dir") + properties.getProperty(""));
         Response response = given().
-                baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app").
+                baseUri(properties.getProperty("base_URL")).
                 when().
                 put("/1/upload").
                 then().
@@ -86,7 +84,7 @@ public class EmployeeDashboardAPITest {
     public void invalidateUploadPan() {
         file = new File(System.getProperty("user.dir") + properties.getProperty(""));
         Response response = given().
-                baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app").
+                baseUri(properties.getProperty("base_URL")).
                 when().
                 put("/1/upload-pan").
                 then().
@@ -101,7 +99,7 @@ public class EmployeeDashboardAPITest {
     public void invalidateUploadMarksheet() {
         file = new File(System.getProperty("user.dir") + properties.getProperty(""));
         Response response = given().
-                baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app").
+                baseUri(properties.getProperty("base_URL")).
                 when().
                 put("/1/upload-marksheet").
                 then().
