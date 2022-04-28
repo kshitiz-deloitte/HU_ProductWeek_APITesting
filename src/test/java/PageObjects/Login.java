@@ -90,7 +90,7 @@ public class Login{
     public Response postCall(String path, String file){
 
              return given().
-                    baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app").
+                    baseUri(properties.getProperty("base_URL")).
                     header("Content-Type", properties.getProperty("content_type_json")).
                     body(file).
                 when().
