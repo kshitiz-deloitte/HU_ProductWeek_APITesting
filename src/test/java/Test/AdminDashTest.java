@@ -1,11 +1,13 @@
 package Test;
+
 import PreRequisites.BaseClass;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.io.File;
+
 import static io.restassured.RestAssured.given;
 
 public class AdminDashTest extends BaseClass {
