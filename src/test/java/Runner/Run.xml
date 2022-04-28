@@ -6,7 +6,11 @@
     </listeners>
     <test name = "KYC Portal Test">
         <classes>
-<!--            <class name = "Test.LoginTest" />-->
+            <class name = "Test.LoginTest" />
+            <class name = "Test.EmployeeSignupTest" />
+            <class name = "Test.AdminDashTest" />
+            <class name = "Test.EmployeeDashboardAPITest" />
+            <class name = "Test.GetEmployeeDetailsTest" />
             <class name = "Test.EditEmployeeDetailsTest" />
         </classes>
     </test>

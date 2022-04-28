@@ -1,6 +1,6 @@
 package Listeners;
 
-import Listeners.PreRequisites.BaseClass;
+import PreRequisites.BaseClass;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -18,7 +18,6 @@ public class kycPortalApiListener extends BaseClass implements ITestListener {
     public void onTestStart(ITestResult result) {
         test=extentReports.createTest("Starting Test "+result.getName());
         test.log(Status.INFO, result.getName()+" Started ");
-        ITestListener.super.onTestStart(result);
     }
 
     @Override

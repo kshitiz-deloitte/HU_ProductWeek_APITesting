@@ -1,4 +1,5 @@
 package Test;
+import PreRequisites.BaseClass;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -8,16 +9,8 @@ import java.io.IOException;
 import java.util.Properties;
 import static io.restassured.RestAssured.given;
 
-public class EmployeeDashboardAPITest {
-    public static Properties properties;
+public class EmployeeDashboardAPITest extends BaseClass {
     File file;
-
-    //Properties
-    @BeforeTest
-    public void getting_properties() throws IOException {
-        properties = new Properties();
-        properties.load(new FileInputStream("src/test/resources/data.properties"));
-    }
 
     //Uploading AadharCard
     @Test(priority = 1)

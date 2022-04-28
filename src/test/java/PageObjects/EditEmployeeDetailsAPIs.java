@@ -1,7 +1,6 @@
 package PageObjects;
 
 import io.restassured.response.Response;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Properties;
@@ -10,6 +9,7 @@ import static io.restassured.RestAssured.given;
 
 public class EditEmployeeDetailsAPIs{
     Properties properties;
+    // Constructor to get the properties file from the Test class
     public EditEmployeeDetailsAPIs(Properties properties){
         this.properties = properties;
     }
@@ -53,11 +53,12 @@ public class EditEmployeeDetailsAPIs{
 //        return executeGetAndGetResponse(properties.getProperty("contact_details_path"));
 //    }
 
-    public Response executePutAndGetResponse(String path, File file){
+    // Function to execute put request: returns response
+    public Response executePutAndGetResponse(String path, File file, String accessToken){
         return given().
-                baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app/").
+                baseUri(properties.getProperty("base_URL")).
                 header("Authorization",
-                        "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbWFuMTIzIiwiaWF0IjoxNjUxMTU1MTM5LCJleHAiOjE2NTEyNDE1Mzl9.FSEVt-_3qoK5YOR8HHoyaP-RKnRjR0TLIkqZ-UttqOfhbemNGb9wc06va_cP0KYDbvqYISqdO2pqoJd8HV-sBQ").
+                        "Bearer " + accessToken).
                 header("Content-Type", properties.getProperty("content_type_json")).
                 body(file).
                 when().
@@ -66,12 +67,12 @@ public class EditEmployeeDetailsAPIs{
                 extract().
                 response();
     }
-
-    public Response executeGetAndGetResponse(String path){
+    // Function to execute get request: returns response
+    public Response executeGetAndGetResponse(String path, String accessToken){
         return given().
-                baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app/").
+                baseUri(properties.getProperty("base_URL")).
                 header("Authorization",
-                        "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbWFuMTIzIiwiaWF0IjoxNjUxMTU1MTM5LCJleHAiOjE2NTEyNDE1Mzl9.FSEVt-_3qoK5YOR8HHoyaP-RKnRjR0TLIkqZ-UttqOfhbemNGb9wc06va_cP0KYDbvqYISqdO2pqoJd8HV-sBQ").
+                        "Bearer " + accessToken).
                 header("Content-Type", properties.getProperty("content_type_json")).
                 when().
                 get(path).
