@@ -1,9 +1,7 @@
 package PageObjects;
 
-import PreRequisites.BaseClass;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Properties;
@@ -15,55 +13,51 @@ public class EditEmployeeDetailsAPIs{
     public EditEmployeeDetailsAPIs(Properties properties){
         this.properties = properties;
     }
-    public Response getResponseFromEditEmployeePersonalDetails(){
-        File jsonFile = new File(properties.getProperty("new_personal_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_personal_details_path"), jsonFile);
-    }
+//    public Response getResponseFromEditEmployeePersonalDetails(JSONObject myJsonObject){
+//        File jsonFile = new File(properties.getProperty("new_personal_details_path"));
+//        return executePutAndGetResponse(properties.getProperty("edit_personal_details_path"), jsonFile);
+//    }
+//
+//    public Response getResponseFromEditEmployeeBankDetails(JSONObject myJsonObject){
+//        return executePutAndGetResponse(properties.getProperty("edit_bank_details_path"), myJsonObject);
+//    }
+//
+//    public Response getResponseFromEditEmployeeEducationDetails(JSONObject myJsonObject){
+//        return executePutAndGetResponse(properties.getProperty("edit_education_details_path"), myJsonObject);
+//    }
+//
+//    public Response getResponseFromEditEmployeeEmploymentDetails(JSONObject myJsonObject){
+//        return executePutAndGetResponse(properties.getProperty("edit_employment_history_path"), myJsonObject);
+//    }
+//    public Response getResponseFromEditEmployeeContactDetails(JSONObject myJsonObject){
+//        return executePutAndGetResponse(properties.getProperty("edit_contact_details_path"), myJsonObject);
+//    }
+//
+//    public Response getResponseFromGetEmployeePersonalDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("personal_details_path"));
+//    }
+//
+//    public Response getResponseFromGetEmployeeBankDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("bank_detail_path"));
+//    }
+//
+//    public Response getResponseFromGetEmployeeEducationDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("education_details_path"));
+//    }
+//
+//    public Response getResponseFromGetEmployeeEmploymentDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("employment_history_path"));
+//    }
+//
+//    public Response getResponseFromGetEmployeeContactDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("contact_details_path"));
+//    }
 
-    public Response getResponseFromEditEmployeeBankDetails(){
-        File jsonFile = new File(properties.getProperty("new_bank_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_bank_details_path"), jsonFile);
-    }
-
-    public Response getResponseFromEditEmployeeEducationDetails(){
-        File jsonFile = new File(properties.getProperty("new_education_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_education_details_path"), jsonFile);
-    }
-
-    public Response getResponseFromEditEmployeeEmploymentDetails(){
-        File jsonFile = new File(properties.getProperty("new_employment_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_employment_history_path"), jsonFile);
-    }
-    public Response getResponseFromEditEmployeeContactDetails(){
-        File jsonFile = new File(properties.getProperty("new_contact_detail_path"));
-        return executeGetAndGetResponse(properties.getProperty("edit_contact_details_path"));
-    }
-
-    public Response getResponseFromGetEmployeePersonalDetails(){
-        return executeGetAndGetResponse(properties.getProperty("edit_contact_details_path"));
-    }
-
-    public Response getResponseFromGetEmployeeBankDetails(){
-        return executeGetAndGetResponse(properties.getProperty("edit_contact_details_path"));
-    }
-
-    public Response getResponseFromGetEmployeeEducationDetails(){
-        return executeGetAndGetResponse(properties.getProperty("edit_contact_details_path"));
-    }
-
-    public Response getResponseFromGetEmployeeEmploymentDetails(){
-        return executeGetAndGetResponse(properties.getProperty("edit_contact_details_path"));
-    }
-
-    public Response getResponseFromGetEmployeeContactDetails(){
-        return executeGetAndGetResponse(properties.getProperty("edit_contact_details_path"));
-    }
-
-    private Response executePutAndGetResponse(String path, File file){
+    public Response executePutAndGetResponse(String path, File file){
         return given().
                 baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app/").
                 header("Authorization",
-                        "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbWFuMTIzIiwiaWF0IjoxNjUxMDU4NDA5LCJleHAiOjE2NTExNDQ4MDl9.mEfIiGjDTkjzffBg33Yc5a7_7BSqdK-TtzuNJS6flJrynNPoMJ1hhrasIhR3iQkQM77rHWNTELzBSfL0GG81hg").
+                        "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbWFuMTIzIiwiaWF0IjoxNjUxMTU1MTM5LCJleHAiOjE2NTEyNDE1Mzl9.FSEVt-_3qoK5YOR8HHoyaP-RKnRjR0TLIkqZ-UttqOfhbemNGb9wc06va_cP0KYDbvqYISqdO2pqoJd8HV-sBQ").
                 header("Content-Type", properties.getProperty("content_type_json")).
                 body(file).
                 when().
@@ -73,11 +67,11 @@ public class EditEmployeeDetailsAPIs{
                 response();
     }
 
-    private Response executeGetAndGetResponse(String path){
+    public Response executeGetAndGetResponse(String path){
         return given().
                 baseUri("https://kyc-backend-urtjok3rza-wl.a.run.app/").
                 header("Authorization",
-                        "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbWFuMTIzIiwiaWF0IjoxNjUxMDU4NDA5LCJleHAiOjE2NTExNDQ4MDl9.mEfIiGjDTkjzffBg33Yc5a7_7BSqdK-TtzuNJS6flJrynNPoMJ1hhrasIhR3iQkQM77rHWNTELzBSfL0GG81hg").
+                        "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbWFuMTIzIiwiaWF0IjoxNjUxMTU1MTM5LCJleHAiOjE2NTEyNDE1Mzl9.FSEVt-_3qoK5YOR8HHoyaP-RKnRjR0TLIkqZ-UttqOfhbemNGb9wc06va_cP0KYDbvqYISqdO2pqoJd8HV-sBQ").
                 header("Content-Type", properties.getProperty("content_type_json")).
                 when().
                 get(path).

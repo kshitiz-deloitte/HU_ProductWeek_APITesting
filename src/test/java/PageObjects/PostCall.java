@@ -1,6 +1,6 @@
 package PageObjects;
 
-import PreRequisites.BaseClass;
+import Listeners.PreRequisites.BaseClass;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;

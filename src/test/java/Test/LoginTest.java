@@ -1,7 +1,7 @@
 package Test;
 
 import PageObjects.PostCall;
-import PreRequisites.BaseClass;
+import Listeners.PreRequisites.BaseClass;
 import com.google.gson.Gson;
 import io.restassured.response.Response;
 import org.json.JSONObject;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class LoginTest extends BaseClass {
     PostCall post;
 
-    @Test
+    @Test(priority = 1)
     public void validateEmployeeLogin() {
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("username", properties.getProperty("employee_exist_username"));
@@ -33,8 +33,8 @@ public class LoginTest extends BaseClass {
         Assert.assertEquals(response.header("Content-Type"), properties.getProperty("content_type_json"));
     }
 
-    @Test
-    public void inValidateEmployeeLogin() {
+    @Test(priority = 2)
+    public void invalidEmployeeLogin() {
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("username", properties.getProperty("invalid_employee_username"));
         hashMap.put("password", properties.getProperty("password"));
@@ -52,7 +52,7 @@ public class LoginTest extends BaseClass {
         Assert.assertEquals(response.header("Content-Type"), properties.getProperty("content_type_json"));
     }
 
-    @Test
+    @Test(priority = 3)
     public void validateAdminLogin() {
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("username", properties.getProperty("admin_username"));
@@ -71,7 +71,7 @@ public class LoginTest extends BaseClass {
         Assert.assertEquals(response.header("Content-Type"), properties.getProperty("content_type_json"));
     }
 
-    @Test
+    @Test(priority = 4)
     public void validateCompanyLogin() {
         HashMap<String, String> hashMap = new HashMap();
         hashMap.put("companyName", properties.getProperty("company_username"));

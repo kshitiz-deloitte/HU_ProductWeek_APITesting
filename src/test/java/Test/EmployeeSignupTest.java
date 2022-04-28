@@ -1,6 +1,6 @@
 package Test;
 import PageObjects.PostCall;
-import PreRequisites.BaseClass;
+import Listeners.PreRequisites.BaseClass;
 import com.google.gson.Gson;
 import io.restassured.response.Response;
 import org.json.JSONObject;

@@ -1,0 +1,11 @@
+2022-04-29 01:45:55.699 [main] INFO  PreRequisites.BaseClass - Extent Report
+2022-04-29 01:45:57.992 [main] INFO  PreRequisites.BaseClass - actual: Testest
+2022-04-29 01:45:57.995 [main] INFO  PreRequisites.BaseClass - ValidateEditEmployeePersonalDetails: Succeeded
+2022-04-29 01:45:58.750 [main] INFO  PreRequisites.BaseClass - actual: 4254343
+2022-04-29 01:45:58.750 [main] INFO  PreRequisites.BaseClass - ValidateEditEmployeeBankDetails: Succeeded
+2022-04-29 01:45:59.427 [main] INFO  PreRequisites.BaseClass - actual: 8
+2022-04-29 01:45:59.427 [main] INFO  PreRequisites.BaseClass - ValidateEditEmployeeEducationDetails: Succeeded
+2022-04-29 01:46:00.039 [main] INFO  PreRequisites.BaseClass - actual: TTTT
+2022-04-29 01:46:00.040 [main] INFO  PreRequisites.BaseClass - ValidateEditEmployeeEmploymentDetails: Succeeded
+2022-04-29 01:46:00.586 [main] INFO  PreRequisites.BaseClass - actual: Test
+2022-04-29 01:46:00.587 [main] INFO  PreRequisites.BaseClass - ValidateEditEmployeeContactDetails: Succeeded

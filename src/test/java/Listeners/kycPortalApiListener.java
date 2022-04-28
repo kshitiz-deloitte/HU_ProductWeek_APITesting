@@ -1,26 +1,38 @@
 package Listeners;
 
-import PreRequisites.BaseClass;
+import Listeners.PreRequisites.BaseClass;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 public class kycPortalApiListener extends BaseClass implements ITestListener {
+
+    ExtentSparkReporter myReporter;
+    ExtentReports extentReports;
+    ExtentTest test;
     @Override
     public void onTestStart(ITestResult result) {
-        System.out.println("Test Started");
+        test=extentReports.createTest("Starting Test "+result.getName());
+        test.log(Status.INFO, result.getName()+" Started ");
         ITestListener.super.onTestStart(result);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        System.out.println("Test Success");
-        ITestListener.super.onTestSuccess(result);
+        log.info(result.getName() + ": Succeeded");
+        test = extentReports.createTest(result.getName());
+        test.pass(result.getName()+": Test Passed");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        ITestListener.super.onTestFailure(result);
+        log.info(result.getName() + ": Failed");
+        test = extentReports.createTest(result.getName());
+        test.fail(result.getName()+": Test Failed");
     }
 
     @Override
@@ -40,11 +52,15 @@ public class kycPortalApiListener extends BaseClass implements ITestListener {
 
     @Override
     public void onStart(ITestContext context) {
-        ITestListener.super.onStart(context);
+        //initialize the reporter
+        log.info("Extent Report");
+        myReporter=new ExtentSparkReporter("C:\\Users\\kbhurtel\\Desktop\\Assignments\\Product Week\\APITesting\\results\\Reports\\extentReport.html");
+        extentReports =new ExtentReports();
+        extentReports.attachReporter(myReporter);
     }
 
     @Override
     public void onFinish(ITestContext context) {
-        ITestListener.super.onFinish(context);
+        extentReports.flush();
     }
 }
