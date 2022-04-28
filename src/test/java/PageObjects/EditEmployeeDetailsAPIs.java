@@ -1,49 +1,82 @@
 package PageObjects;
 
-import PreRequisites.BaseClass;
 import io.restassured.response.Response;
 
 import java.io.File;
+import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 
-public class EditEmployeeDetailsAPIs extends BaseClass {
-
-    public Response getResponseFromEditEmployeePersonalDetails(){
-        File jsonFile = new File(properties.getProperty("new_personal_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_personal_details_path"), jsonFile);
+public class EditEmployeeDetailsAPIs{
+    Properties properties;
+    // Constructor to get the properties file from the Test class
+    public EditEmployeeDetailsAPIs(Properties properties){
+        this.properties = properties;
     }
+//    public Response getResponseFromEditEmployeePersonalDetails(JSONObject myJsonObject){
+//        File jsonFile = new File(properties.getProperty("new_personal_details_path"));
+//        return executePutAndGetResponse(properties.getProperty("edit_personal_details_path"), jsonFile);
+//    }
+//
+//    public Response getResponseFromEditEmployeeBankDetails(JSONObject myJsonObject){
+//        return executePutAndGetResponse(properties.getProperty("edit_bank_details_path"), myJsonObject);
+//    }
+//
+//    public Response getResponseFromEditEmployeeEducationDetails(JSONObject myJsonObject){
+//        return executePutAndGetResponse(properties.getProperty("edit_education_details_path"), myJsonObject);
+//    }
+//
+//    public Response getResponseFromEditEmployeeEmploymentDetails(JSONObject myJsonObject){
+//        return executePutAndGetResponse(properties.getProperty("edit_employment_history_path"), myJsonObject);
+//    }
+//    public Response getResponseFromEditEmployeeContactDetails(JSONObject myJsonObject){
+//        return executePutAndGetResponse(properties.getProperty("edit_contact_details_path"), myJsonObject);
+//    }
+//
+//    public Response getResponseFromGetEmployeePersonalDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("personal_details_path"));
+//    }
+//
+//    public Response getResponseFromGetEmployeeBankDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("bank_detail_path"));
+//    }
+//
+//    public Response getResponseFromGetEmployeeEducationDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("education_details_path"));
+//    }
+//
+//    public Response getResponseFromGetEmployeeEmploymentDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("employment_history_path"));
+//    }
+//
+//    public Response getResponseFromGetEmployeeContactDetails(){
+//        return executeGetAndGetResponse(properties.getProperty("contact_details_path"));
+//    }
 
-    public Response getResponseFromEditEmployeeBankDetails(){
-        File jsonFile = new File(properties.getProperty("new_personal_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_bank_details_path"), jsonFile);
-    }
-
-    public Response getResponseFromEditEmployeeEducationDetails(){
-        File jsonFile = new File(properties.getProperty("new_personal_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_education_details_path"), jsonFile);
-    }
-
-    public Response getResponseFromEditEmployeeEmploymentDetails(){
-        File jsonFile = new File(properties.getProperty("new_personal_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_employment_history_path"), jsonFile);
-    }
-
-    public Response getResponseFromEditEmployeeContactDetails(){
-        File jsonFile = new File(properties.getProperty("new_personal_detail_path"));
-        return executePutAndGetResponse(properties.getProperty("edit_contact_details_path"),jsonFile);
-    }
-
-    private Response executePutAndGetResponse(String path, File file){
-        requestSpecification.header("Authorization",
-                "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbWFuMTIzIiwiaWF0IjoxNjUxMDU4NDA5LCJleHAiOjE2NTExNDQ4MDl9.mEfIiGjDTkjzffBg33Yc5a7_7BSqdK-TtzuNJS6flJrynNPoMJ1hhrasIhR3iQkQM77rHWNTELzBSfL0GG81hg");
-        requestSpecification.body(file);
+    // Function to execute put request: returns response
+    public Response executePutAndGetResponse(String path, File file, String accessToken){
         return given().
-                spec(requestSpecification).
+                baseUri(properties.getProperty("base_URL")).
+                header("Authorization",
+                        "Bearer " + accessToken).
+                header("Content-Type", properties.getProperty("content_type_json")).
+                body(file).
                 when().
                 put(path).
                 then().
-                spec(responseSpecification).
+                extract().
+                response();
+    }
+    // Function to execute get request: returns response
+    public Response executeGetAndGetResponse(String path, String accessToken){
+        return given().
+                baseUri(properties.getProperty("base_URL")).
+                header("Authorization",
+                        "Bearer " + accessToken).
+                header("Content-Type", properties.getProperty("content_type_json")).
+                when().
+                get(path).
+                then().
                 extract().
                 response();
     }

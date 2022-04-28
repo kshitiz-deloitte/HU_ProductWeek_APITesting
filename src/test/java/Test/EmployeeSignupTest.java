@@ -1,6 +1,6 @@
 package Test;
-import PageObjects.SignUp;
 import PreRequisites.BaseClass;
+import PageObjects.SignUp;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.testng.Assert;
