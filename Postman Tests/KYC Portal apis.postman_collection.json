@@ -1,0 +1,1009 @@
+{
+	"info": {
+		"_postman_id": "9b77f971-037e-433a-9186-a1539b15a44f",
+		"name": "KYC Portal apis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validate https code\r",
+							"pm.test(\"Https code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//validate the content type\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\",\"application/json\");\r",
+							"});\r",
+							"//validate the response time is less than 400 ms \r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//validate response based on request Invalid and Valid Signup\r",
+							"\r",
+							"pm.test(\"Validating User\",function(){\r",
+							"    resq = JSON.parse(pm.request.body.raw);\r",
+							"    resp = pm.response.json();\r",
+							"    if ((resq.username) == (environment.Name))\r",
+							"    {\r",
+							"        pm.expect(resp.message).to.eq(\"User registered successfully!\");\r",
+							"    }\r",
+							"    else{\r",
+							"        pm.expect(resp.message).to.eq(\"Error: Username is already taken!\");\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"{{Name}}\",\n    \"password\":\"{{Password}}\",\n    \"email\":\"{{Email}}\",\n    \"company\":\"{{Company}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}{{SignUp_Path}}",
+					"host": [
+						"{{Url}}{{SignUp_Path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login employee/admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validate https code\r",
+							"pm.test(\"Https code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"resp = pm.response.json();\r",
+							"    pm.environment.set('User_Token', resp.accessToken);\r",
+							"//validate the content type\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\",\"application/json\");\r",
+							"});\r",
+							"\r",
+							"//validate the response time is less than 400 ms \r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"//validate response based on request Invalid and Valid login\r",
+							"pm.test(\"Validating User\",function(){\r",
+							"    resq = JSON.parse(pm.request.body.raw);\r",
+							"    resp = pm.response.json();\r",
+							"    if ((resq.username) == (environment.New_Employee))\r",
+							"    {\r",
+							"        pm.expect(resp.message).to.eq(\"Bad credentials\");\r",
+							"    }\r",
+							"    else{\r",
+							"        console.log(environment.Registered_Employee)\r",
+							"        pm.expect(resp.username).to.eq(environment.Name);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"{{Name}}\",\n    \"password\":\"{{Password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}{{SignIn_Path}}",
+					"host": [
+						"{{Url}}{{SignIn_Path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validate https code\r",
+							"pm.test(\"Https code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//validate the content type\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\",\"application/json\");\r",
+							"});\r",
+							"\r",
+							"//validate the response time is less than 400 ms \r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"//validate the response schema as expected or not \r",
+							"\r",
+							"pm.test(\"Validate schema\", () => {\r",
+							"pm.response.to.have.jsonSchema(JSON.parse(pm.environment.get('User_schema')));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}{{All_Users_Path}}",
+					"host": [
+						"{{Url}}{{All_Users_Path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Employee Personal Detail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Https code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//validate the content type\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\",\"application/json\");\r",
+							"});\r",
+							"\r",
+							"//validate the response time is less than 400 ms \r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"//validates Updated data\r",
+							"pm.test(\"Validating Data is updated or not\",function(){\r",
+							"    resp = pm.response.json();\r",
+							"    resq = JSON.parse(pm.request.body.raw);\r",
+							"    pm.expect(resp.lastName).to.eq(resq.lastName);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{User_Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"lastName\": \"{{LastName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Url}}{{User_Path}}/{{UserID}}{{Edit_Details}}",
+					"host": [
+						"{{Url}}{{User_Path}}"
+					],
+					"path": [
+						"{{UserID}}{{Edit_Details}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee Personal Detail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Https code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//validate the content type\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\",\"application/json\");\r",
+							"});\r",
+							"\r",
+							"//validate the response time is less than 400 ms \r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"//Validting Response Id Based on Request Id\r",
+							"pm.test(\"Validating UserId for particular Request Id\",function(){\r",
+							"    resp = pm.response.json();\r",
+							"    console.log(resp.userId)\r",
+							"    pm.expect(resp.userId.id).to.eq(parseInt(environment.UserID));\r",
+							"});\r",
+							"\r",
+							"//validate the response schema as expected or not \r",
+							"pm.test(\"Validate schema\", () => {\r",
+							"pm.response.to.have.jsonSchema(JSON.parse(pm.environment.get('PersonalDetails_schema')));\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Admin_Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{Url}}{{User_Path}}/{{UserID}}{{Personal_Details}}",
+					"host": [
+						"{{Url}}{{User_Path}}"
+					],
+					"path": [
+						"{{UserID}}{{Personal_Details}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Employee Bank Detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJLdXNoYWdyYSIsImlhdCI6MTY1MDk3MDQ5MCwiZXhwIjoxNjUxMDU2ODkwfQ.QhjFUWGKMM68yn8SdbFik4nCaIzkPJmnLWyzAAFvEtw_KjbzxkVvnf0JhcwINagjDhOEoz-ecXZhOOU-WgJALw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"bankName\": \"HDFC\"   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/bank/1/update",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"bank",
+						"1",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee Bank detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gxMjMiLCJpYXQiOjE2NDk2NTkxNzcsImV4cCI6MTY0OTc0NTU3N30.7TiRnDyMDmFbh4zvw2OkynV81p8iAgSZVYyXLjMY09c6GsbbB0WDp_hI2cihfLSxv9IPod62Wwb9oWw8OY4w5g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/1/bankDetails",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"1",
+						"bankDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Employee Education detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gxMjMiLCJpYXQiOjE2NDk2NTkxNzcsImV4cCI6MTY0OTc0NTU3N30.7TiRnDyMDmFbh4zvw2OkynV81p8iAgSZVYyXLjMY09c6GsbbB0WDp_hI2cihfLSxv9IPod62Wwb9oWw8OY4w5g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"college\":\"IIT Dhanyawad\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/1/editEducation",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"1",
+						"editEducation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee Education details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gxMjMiLCJpYXQiOjE2NDk2NTkxNzcsImV4cCI6MTY0OTc0NTU3N30.7TiRnDyMDmFbh4zvw2OkynV81p8iAgSZVYyXLjMY09c6GsbbB0WDp_hI2cihfLSxv9IPod62Wwb9oWw8OY4w5g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/1/education",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"1",
+						"education"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Employee employment detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gxMjMiLCJpYXQiOjE2NDk2NTkxNzcsImV4cCI6MTY0OTc0NTU3N30.7TiRnDyMDmFbh4zvw2OkynV81p8iAgSZVYyXLjMY09c6GsbbB0WDp_hI2cihfLSxv9IPod62Wwb9oWw8OY4w5g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"previousCompany\": \"TCS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/1/editEmployement",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"1",
+						"editEmployement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee employment detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gxMjMiLCJpYXQiOjE2NDk2NTkxNzcsImV4cCI6MTY0OTc0NTU3N30.7TiRnDyMDmFbh4zvw2OkynV81p8iAgSZVYyXLjMY09c6GsbbB0WDp_hI2cihfLSxv9IPod62Wwb9oWw8OY4w5g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/1/employement",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"1",
+						"employement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Employee Address and Contact detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gxMjMiLCJpYXQiOjE2NDk2NTkxNzcsImV4cCI6MTY0OTc0NTU3N30.7TiRnDyMDmFbh4zvw2OkynV81p8iAgSZVYyXLjMY09c6GsbbB0WDp_hI2cihfLSxv9IPod62Wwb9oWw8OY4w5g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"area\":\"Jhansi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/1/editAddress",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"1",
+						"editAddress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee Address detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gxMjMiLCJpYXQiOjE2NDk2NTkxNzcsImV4cCI6MTY0OTc0NTU3N30.7TiRnDyMDmFbh4zvw2OkynV81p8iAgSZVYyXLjMY09c6GsbbB0WDp_hI2cihfLSxv9IPod62Wwb9oWw8OY4w5g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/1/addressDetails",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"1",
+						"addressDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Aadhar card of employee",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/rachrai/Downloads/9cdaac09c09e47b8b28421267edfcb27.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/1/upload",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"1",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Aadhar card (open api in a browser)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/files-aadhar/1",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"files-aadhar",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload pan card ",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/rachrai/Pictures/landing1.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/1/upload-pan",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"1",
+						"upload-pan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download pan (open api in a browser)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/files-pan/1",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"files-pan",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload marksheet ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdWhhcyIsImlhdCI6MTY1MTAzNDY1MCwiZXhwIjoxNjUxMTIxMDUwfQ.P6DQshx_xc_XNwUP-FODF5_JGb-v-Cq4oB8huCsF4w1IhG7mVomX254C-OG76IBibONen9fkRv51yW4jpuEz8g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/kribansal/Pictures/PasswordVisiblityToggle_defect.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/1/upload-marksheet",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"1",
+						"upload-marksheet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download marksheet (open api in browser)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/files-marksheet/1",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"files-marksheet",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit KYC Status of an umployee",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\":\"Approved\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/kyc/add/1",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"kyc",
+						"add",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get KYC status of an employee",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/kyc/get/1",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"kyc",
+						"get",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all companies registered",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/company/all",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"company",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register company",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"companyName\": \"Deloitte\",\n        \"companyPan\": \"PAN772734\",\n        \"companyGst\": \"AN34567434\",\n        \"industry\": \"IT\",\n        \"email\": \"deloitte@deloitte.in\",\n        \"password\": \"123456\",\n        \"phone\": 3334623,\n        \"address\": \"Banglore\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/company/register",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"company",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company Signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"companyName\":\"Deloitte\",\n    \"password\":\"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/company/signin",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"company",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send email (JSON: to,subject,message)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"to\":\"uzumki002@gmail.com\",\n    \"subject\":\"Test\",\n    \"message\":\"message\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/user/sendemail",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"user",
+						"sendemail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get users by company",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kyc-backend-urtjok3rza-wl.a.run.app/api/test/Deloitte/user",
+					"protocol": "https",
+					"host": [
+						"kyc-backend-urtjok3rza-wl",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"test",
+						"Deloitte",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "variable_key",
+			"value": ""
+		}
+	]
+}
