@@ -16,21 +16,18 @@ public class kycPortalApiListener extends BaseClass implements ITestListener {
     ExtentTest test;
     @Override
     public void onTestStart(ITestResult result) {
-        test=extentReports.createTest("Starting Test "+result.getName());
         test.log(Status.INFO, result.getName()+" Started ");
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
         log.info(result.getName() + ": Succeeded");
-        test = extentReports.createTest(result.getName());
         test.pass(result.getName()+": Test Passed");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
         log.info(result.getName() + ": Failed");
-        test = extentReports.createTest(result.getName());
         test.fail(result.getName()+": Test Failed");
     }
 
@@ -53,9 +50,10 @@ public class kycPortalApiListener extends BaseClass implements ITestListener {
     public void onStart(ITestContext context) {
         //initialize the reporter
         log.info("Extent Report");
-        myReporter=new ExtentSparkReporter("C:\\Users\\kbhurtel\\Desktop\\Assignments\\Product Week\\APITesting\\results\\Reports\\extentReport.html");
+        myReporter=new ExtentSparkReporter("results/Reports/extentReport.html");
         extentReports =new ExtentReports();
         extentReports.attachReporter(myReporter);
+        test = extentReports.createTest("KYC API Testing");
     }
 
     @Override
